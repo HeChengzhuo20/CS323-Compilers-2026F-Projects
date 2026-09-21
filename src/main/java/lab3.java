@@ -1,16 +1,26 @@
-import generated.IPV4.IPV4;
+import generated.ex1.ex1;
+
+import java.io.IOException;
+
+import org.antlr.v4.parse.GrammarTreeVisitor.channelSpec_return;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 
-public class Main {
+public class lab3 {
     public static void main(String[] args) {
-        CharStream charStream =
-                CharStreams.fromString("257.016.299.233");
+        CharStream charStream = null;
+        int ws = 0;
+        try {
+            charStream = CharStreams.fromFileName("/home/cs323/Desktop/CS323-Compilers-2026F-Projects/src/main/java/testcase/test1.c");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-        IPV4 lexer =
-                new IPV4(charStream);
+        ex1 lexer =
+                new ex1(charStream);
 
         CommonTokenStream tokens =
                 new CommonTokenStream(lexer);
@@ -22,7 +32,11 @@ public class Main {
             if (token.getType() == Token.EOF) {
                 continue;
             }
-
+            if (token.getChannel() != Token.DEFAULT_CHANNEL) {
+                ws++;
+                continue; 
+            }
+            
             String tokenType =
                     lexer.getVocabulary()
                             .getSymbolicName(token.getType());
@@ -33,5 +47,6 @@ public class Main {
                     token.getText()
             );
         }
+        System.out.println("ws: " + ws);
     }
 }
