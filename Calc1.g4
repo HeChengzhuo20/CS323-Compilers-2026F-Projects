@@ -1,20 +1,18 @@
 grammar Calc1;
 
-expr  	: expr PLUS expr
-	 	| expr DIV expr
-	 	| expr PLUS expr
-	 	| expr MINUS expr
-	 	| factor
-        ;
-
-factor  : INT
-        | ID
-        ;
+root: expr <EOF>;
+expr
+    : '(' expr ')'            // 括号优先级最高，直接包裹一个完整的 expr
+    | expr (MUL | DIV) expr   // 乘除
+    | expr (ADD | SUB) expr   // 加减
+    | INT                     // 整数
+    ;
 
 INT : [0-9]+ ;
-PLUS: '+';
-MINUS: '-';
-MUL: '*';
-DIV: '/';
-ID : [a-zA-Z]+ ;
-WS  : [ \t\r\n]+ -> skip ;
+ADD : '+' ;
+SUB : '-' ;
+MUL:'*';
+DIV:'/';
+LPAREN : '(' ;
+RPAREN : ')' ;
+WS  : [ \t\r\n]+ -> skip ; 
